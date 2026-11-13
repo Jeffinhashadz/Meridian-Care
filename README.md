@@ -40,11 +40,25 @@ npm run build
 npm run preview
 ```
 
-## Deploy
+## Deploy on Netlify
 
-- **Vercel**: import the repo; `vercel.json` already rewrites SPA routes.  
-- **Netlify**: connect the repo; `public/_redirects` handles client routing.  
-- **GitHub Pages**: set `base` in `vite.config.ts` if publishing under a subpath.
+This project is Netlify-ready (`netlify.toml` + SPA redirects).
+
+1. Go to [app.netlify.com](https://app.netlify.com) → **Add new site** → **Import an existing project**
+2. Connect **GitHub** and select `Jeffinhashadz/Meridian-Care`
+3. Netlify will read `netlify.toml` automatically:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+4. Click **Deploy site**
+
+CLI alternative:
+
+```bash
+npm run build
+npx netlify deploy --prod --dir=dist
+```
+
+After deploy, open the Netlify URL and try each role from the login screen.
 
 ## Stack
 

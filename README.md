@@ -40,25 +40,19 @@ npm run build
 npm run preview
 ```
 
-## Deploy on Netlify
+## Deploy on Netlify (manual)
 
-This project is Netlify-ready (`netlify.toml` + SPA redirects).
-
-1. Go to [app.netlify.com](https://app.netlify.com) → **Add new site** → **Import an existing project**
-2. Connect **GitHub** and select `Jeffinhashadz/Meridian-Care`
-3. Netlify will read `netlify.toml` automatically:
-   - **Build command:** `npm run build`
-   - **Publish directory:** `dist`
-4. Click **Deploy site**
-
-CLI alternative:
+The app is Netlify-ready. For **drag-and-drop** deploy:
 
 ```bash
 npm run build
-npx netlify deploy --prod --dir=dist
 ```
 
-After deploy, open the Netlify URL and try each role from the login screen.
+Then on Netlify → your team → Projects, drop the **`dist`** folder (not the whole project).
+
+`dist/_redirects` is included automatically so React Router paths work after refresh.
+
+Optional Git import: connect the GitHub repo; `netlify.toml` sets `npm run build` → publish `dist`.
 
 ## Stack
 

@@ -1,17 +1,24 @@
-/**
- * Blocks routes the current demo role is not allowed to open.
- */
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import type { Role } from '../types';
-import { logger } from '../utils/logger';
 import type { ReactNode } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { useData } from '@/context/DataContext';
+import type { ModuleKey, Role } from '@/types';
 
-export function RoleGuard({ roles, children }: { roles: Role[]; children: ReactNode }) {
-  const { canAccess, user } = useAuth();
-  if (!canAccess(roles)) {
-    logger.warn('Role blocked from route', { role: user?.role, allowed: roles });
-    return <Navigate to="/dashboard" replace />;
+export function RoleGuard({
+  module,
+  roles,
+  children,
+}: {
+  module?: ModuleKey;
+  roles?: Role[];
+  children: ReactNode;
+}) {
+  const { user } = useAuth();
+  const { effectivePermissions } = useData();
+  if (!user) return <Navigate to="/login" replace />;
+  const allowed = module ? effectivePermissions(module) : roles ?? [];
+  if (!allowed.includes(user.role)) {
+    return <Navigate to="/no-access" replace />;
   }
   return children;
 }

@@ -1,6 +1,5 @@
 /**
- * Shared domain types for Meridian Care.
- * Static-only demo — shapes mirror a real healthcare SaaS data model.
+ * Domain types for Meridian — shared across data modules and features.
  */
 
 export type Role =
@@ -9,6 +8,16 @@ export type Role =
   | 'patient'
   | 'nutritionist'
   | 'yoga_instructor';
+
+export type PatientStatus = 'Active' | 'Inactive' | 'Critical';
+export type HistoryType = 'Diagnosis' | 'Procedure' | 'Allergy' | 'Immunization' | 'Chronic';
+export type Severity = 'Low' | 'Moderate' | 'High';
+export type ReportCategory = 'Lab' | 'Imaging' | 'Pathology' | 'Cardiology' | 'Other';
+export type ReportStatus = 'Ready' | 'Pending' | 'Reviewed';
+export type ConsultType = 'In-Person' | 'Telehealth' | 'Follow-up';
+export type ConsultStatus = 'Completed' | 'Scheduled' | 'Cancelled';
+export type PlanStatus = 'Active' | 'Completed' | 'Draft';
+export type YogaIntensity = 'Gentle' | 'Moderate' | 'Advanced';
 
 export interface User {
   id: string;
@@ -30,7 +39,7 @@ export interface Patient {
   address: string;
   emergencyContact: string;
   avatar: string;
-  status: 'Active' | 'Inactive' | 'Critical';
+  status: PatientStatus;
   primaryDoctor: string;
   lastVisit: string;
   conditions: string[];
@@ -43,22 +52,23 @@ export interface MedicalHistoryEntry {
   id: string;
   patientId: string;
   date: string;
-  type: 'Diagnosis' | 'Procedure' | 'Allergy' | 'Immunization' | 'Chronic';
+  type: HistoryType;
   title: string;
   description: string;
   clinician: string;
-  severity?: 'Low' | 'Moderate' | 'High';
+  severity?: Severity;
 }
 
 export interface MedicalReport {
   id: string;
   patientId: string;
   title: string;
-  category: 'Lab' | 'Imaging' | 'Pathology' | 'Cardiology' | 'Other';
+  category: ReportCategory;
   date: string;
   orderedBy: string;
-  status: 'Ready' | 'Pending' | 'Reviewed';
+  status: ReportStatus;
   summary: string;
+  findings?: string;
   fileLabel: string;
 }
 
@@ -68,11 +78,11 @@ export interface Consultation {
   doctor: string;
   date: string;
   time: string;
-  type: 'In-Person' | 'Telehealth' | 'Follow-up';
+  type: ConsultType;
   department: string;
   reason: string;
   notes: string;
-  status: 'Completed' | 'Scheduled' | 'Cancelled';
+  status: ConsultStatus;
   durationMin: number;
 }
 
@@ -88,7 +98,8 @@ export interface NutritionPlan {
   meals: { name: string; time: string; items: string; calories: number }[];
   restrictions: string[];
   adherence: number;
-  status: 'Active' | 'Completed' | 'Draft';
+  weeklyAdherence: number[];
+  status: PlanStatus;
 }
 
 export interface YogaSession {
@@ -98,7 +109,7 @@ export interface YogaSession {
   style: string;
   instructor: string;
   durationMin: number;
-  intensity: 'Gentle' | 'Moderate' | 'Advanced';
+  intensity: YogaIntensity;
   focus: string;
   moodBefore: number;
   moodAfter: number;
@@ -119,3 +130,14 @@ export interface NavItem {
   icon: string;
   roles: Role[];
 }
+
+export type ModuleKey =
+  | 'dashboard'
+  | 'patients'
+  | 'myProfile'
+  | 'history'
+  | 'reports'
+  | 'consultations'
+  | 'nutrition'
+  | 'yoga'
+  | 'access';
